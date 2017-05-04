@@ -39,7 +39,6 @@ public final class TransactionManager implements AutoCloseable {
     }
 
     private static class SingletonHolder {
-
         private final static TransactionManager SINGLETON = new TransactionManager();
     }
 
@@ -48,14 +47,9 @@ public final class TransactionManager implements AutoCloseable {
     }
 
     public void begin() throws SQLException {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); 
-            Connection con = this.getConnection();
-            con.setAutoCommit(false);
-            this.CONNECTIONHOLDER.set(con); 
-        } catch (ClassNotFoundException e) {
-            Logger.getLogger(TransactionManager.class.getName()).log(Level.SEVERE, null, e);
-        }
+        Connection con = this.getConnection();
+        con.setAutoCommit(false);
+        this.CONNECTIONHOLDER.set(con);
     }
 
     public void commit() throws SQLException {
@@ -71,7 +65,7 @@ public final class TransactionManager implements AutoCloseable {
         this.CONNECTIONHOLDER.get().close();
     }
 
-    public Connection getConnection() {        
+    public Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             return DriverManager.getConnection(URL, USER, PAROLA);

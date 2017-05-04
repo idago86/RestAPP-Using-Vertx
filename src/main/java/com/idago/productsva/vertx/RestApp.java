@@ -51,6 +51,7 @@ public class RestApp extends AbstractVerticle {
         router.route().handler(BodyHandler.create());
 
         ///create the endpoints
+        router.get("/").handler(routingCtx -> routingCtx.reroute("/products"));
         router.get("/products").handler(this::all);
         router.get("/products/:productID").handler(this::findOne);
         router.post("/products").handler(this::create);
